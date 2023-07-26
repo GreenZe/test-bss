@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BSS FIRE</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css"
+    />
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .video-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: -1; /* Đưa video xuống sau nền */
+      }
+
+      .video-background video {
+        object-fit: cover; /* Để video tự điều chỉnh kích thước vừa với màn hình */
+        width: 100%;
+        height: 100%;
+      }
+
+      .splash-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .splash-screen svg {
+        width: 100px !important;
+      }
+
+      .main-content {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .main-content p {
+        font-size: 24px;
+        text-align: center;
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="splash-screen" id="splash-screen"></div>
+    <div class="main-content" id="main-content">
+      <div class="video-background">
+        <video id="background-video" loop muted playsinline>
+          <source src="./a.mp4" type="video/mp4" />
+        </video>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.13/lottie.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Hiển thị màn hình Splash với animation từ Lottie
+        const splashScreenContainer = document.getElementById("splash-screen");
+        const splashAnimation = bodymovin.loadAnimation({
+          container: splashScreenContainer,
+          path: "./splash.json", // Đường dẫn đến file JSON chứa animation
+          renderer: "svg",
+          loop: false,
+          autoplay: true,
+        });
+
+        // Chờ khi animation kết thúc
+        splashAnimation.addEventListener("complete", function () {
+          // Hiển thị popup khi animation Lottie hoàn tất
+          showPopup();
+        });
+      });
+
+      function showPopup() {
+        document.getElementById("splash-screen").remove();
+        Swal.fire({
+          title: "Popup Title",
+          text: "This is the content of the popup.",
+          icon: "info",
+          confirmButtonText: "OK",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            showMainContent();
+          }
+        });
+      }
+
+      function showMainContent() {
+        const mainContent = document.getElementById("main-content");
+        const backgroundVideo = document.getElementById("background-video");
+
+        mainContent.style.display = "block";
+
+        // Phát video sau khi popup được xác nhận
+        backgroundVideo.play();
+      }
+
+      function closePopup() {
+        Swal.close();
+      }
+    </script>
+  </body>
+</html>
