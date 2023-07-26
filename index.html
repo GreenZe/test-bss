@@ -111,10 +111,15 @@
         const mainContent = document.getElementById("main-content");
         const backgroundVideo = document.getElementById("background-video");
 
-        mainContent.style.display = "block";
-
         // Phát video sau khi popup được xác nhận
-        backgroundVideo.play();
+        // Tải video
+        backgroundVideo.load();
+
+        // Phát video sau khi đã tải xong
+        backgroundVideo.oncanplaythrough = function () {
+          mainContent.style.display = "block";
+          backgroundVideo.play();
+        };
       }
 
       function closePopup() {
