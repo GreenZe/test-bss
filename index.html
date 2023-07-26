@@ -15,11 +15,13 @@
         padding: 0;
         height: 100%;
         overflow: hidden;
+        background-color: black;
       }
 
       .video-background {
         position: fixed;
         top: 0;
+        right: 0;
         left: 0;
         width: 100%;
         height: 100%;
@@ -39,10 +41,13 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: #000;
+        background-image: url("./bss-bg.jpg");
         display: flex;
         align-items: center;
         justify-content: center;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
       }
       .splash-screen svg {
         width: 100px !important;
@@ -82,20 +87,33 @@
         font-weight: 800 !important;
         background: rgba(219, 115, 24, 0.2) !important;
         color: #fcca6b !important;
-        text-shadow: 0 0 2px rgb(237, 160, 52), 0 0 6px rgb(235, 183, 71), 0 0 12px rgb(229, 172, 103),
-          0 0 22px rgb(226, 120, 20), 0 0 32px rgb(226, 121, 15),
-          0 0 42px rgb(239, 152, 11), 0 0 62px rgb(212, 105, 24),
-          0 0 51px rgb(198, 109, 21);
+        text-shadow: 0 0 2px rgb(237, 160, 52), 0 0 6px rgb(235, 183, 71),
+          0 0 12px rgb(229, 172, 103), 0 0 22px rgb(226, 120, 20),
+          0 0 32px rgb(226, 121, 15), 0 0 42px rgb(239, 152, 11),
+          0 0 62px rgb(212, 105, 24), 0 0 51px rgb(198, 109, 21);
+      }
+      .container {
+        opacity: 0;
+        animation: fadeIn 1.5s forwards;
+        width: 100%;
+        height: 100%;
+      }
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
       }
     </style>
   </head>
   <body>
-    <div class="splash-screen" id="splash-screen"></div>
-    <div class="main-content" id="main-content">
-      <div class="video-background">
-        <video id="background-video" loop muted playsinline>
-          <source src="./a.mp4" type="video/mp4" />
-        </video>
+    <div class="container">
+      <div class="splash-screen" id="splash-screen"></div>
+      <div class="main-content" id="main-content">
+        <div class="video-background">
+          <video id="background-video" loop playsinline>
+            <source src="./a.mp4" type="video/mp4" />
+          </video>
+        </div>
       </div>
     </div>
 
