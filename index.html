@@ -16,6 +16,11 @@
         height: 100%;
         overflow: hidden;
         background-color: black;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
       }
 
       .video-background {
@@ -380,6 +385,7 @@
         }).then((result) => {
           if (result.isConfirmed) {
             showFingerPrint();
+            // showMainContent();
           }
         });
       }
@@ -389,56 +395,51 @@
       var fingerPrintClone = $(".clone");
       fingerprintconainter.hide();
 
-      function showFingerPrint() {
-        $(".text-printer").show();
-        setTimeout(function () {
-          fingerprintconainter.fadeIn();
-        }, 2000);
-      }
+      const backgroundVideo = document.getElementById("background-video");
+      backgroundVideo.load();
 
       function showMainContent() {
-        const mainContent = document.getElementById("main-content");
-        const backgroundVideo = document.getElementById("background-video");
-        backgroundVideo.load();
-        backgroundVideo.oncanplaythrough = function () {
-          mainContent.style.display = "block";
-          backgroundVideo.play();
-        };
+        backgroundVideo.play();
       }
 
       function closePopup() {
         Swal.close();
       }
-      function finishedDrawing() {
-        var drawStatus = animation.getStatus();
+      function showFingerPrint() {
+        $(".text-printer").show();
+        function finishedDrawing() {
+          var drawStatus = animation.getStatus();
 
-        if (drawStatus === "end") {
-          fingerprintconainter.fadeOut("fast", function () {
-            $(".text-printer").fadeOut();
-            showMainContent();
-          });
+          if (drawStatus === "end") {
+            fingerprintconainter.fadeOut("fast", function () {
+              $(".text-printer").fadeOut();
+            });
+          }
         }
+        var options = {
+          duration: 250,
+          type: "scenario",
+          animTimingFunction: Vivus.EASE_OUT,
+        };
+
+        var animation = new Vivus("fingerprint", options, finishedDrawing);
+        animation.stop();
+
+        fingerprintconainter.on("touchstart", function () {
+          backgroundVideo.play();
+          animation.reset();
+          fingerPrintClone.addClass("active");
+          animation.play(1);
+        });
+
+        // fingerprintconainter.on("touchend", function () {
+        //   fingerPrintClone.removeClass("active");
+        //   animation.play(-1);
+        // });
+        setTimeout(function () {
+          fingerprintconainter.fadeIn();
+        }, 2000);
       }
-
-      var options = {
-        duration: 250,
-        type: "scenario",
-        animTimingFunction: Vivus.EASE_OUT,
-      };
-
-      var animation = new Vivus("fingerprint", options, finishedDrawing);
-      animation.stop();
-
-      fingerprintconainter.on("touchstart", function () {
-        animation.reset();
-        fingerPrintClone.addClass("active");
-        animation.play(1);
-      });
-
-      fingerprintconainter.on("touchend", function () {
-        fingerPrintClone.removeClass("active");
-        animation.play(-1);
-      });
     </script>
   </body>
 </html>
