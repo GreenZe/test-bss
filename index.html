@@ -371,12 +371,12 @@
         });
 
         splashAnimation.addEventListener("complete", function () {
-          showPopup();
+          $("#splash-screen").fadeOut();
+          showFingerPrint();
         });
       });
 
       function showPopup() {
-        document.getElementById("splash-screen").remove();
         Swal.fire({
           imageUrl: "./bg.png",
           imageWidth: 400,
@@ -384,8 +384,7 @@
           confirmButtonText: "SẴN SÀNG",
         }).then((result) => {
           if (result.isConfirmed) {
-            showFingerPrint();
-            // showMainContent();
+            showMainContent();
           }
         });
       }
@@ -413,6 +412,7 @@
           if (drawStatus === "end") {
             fingerprintconainter.fadeOut("fast", function () {
               $(".text-printer").fadeOut();
+              showPopup();
             });
           }
         }
@@ -426,16 +426,15 @@
         animation.stop();
 
         fingerprintconainter.on("touchstart", function () {
-          backgroundVideo.play();
           animation.reset();
           fingerPrintClone.addClass("active");
           animation.play(1);
         });
 
-        // fingerprintconainter.on("touchend", function () {
-        //   fingerPrintClone.removeClass("active");
-        //   animation.play(-1);
-        // });
+        fingerprintconainter.on("touchend", function () {
+          fingerPrintClone.removeClass("active");
+          animation.play(-1);
+        });
         setTimeout(function () {
           fingerprintconainter.fadeIn();
         }, 2000);
